@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gopya - Secure Secret Sharing</title>
+    
+    <!-- Fonts: Outfit (Premium Sans Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <script src="bcrypt.min.js"></script>
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    
+    <main class="container">
+      <header class="app-header">
+        <div class="logo">
+          <h1>Gopya</h1>
+        </div>
+        <p class="subtitle">Secure, one-time secret sharing for the modern web.</p>
+      </header>
+
+      <section class="card glass-panel" id="createSection">
+        <div class="card-header">
+          <i class="fa-solid fa-circle-plus icon-lg"></i>
+          <h2>Create Secret</h2>
+        </div>
+        
+        <div class="form-group">
+          <label for="secret">Your Secret</label>
+          <div class="input-wrapper">
+            <textarea id="secret" rows="5" placeholder="Paste your sensitive data here..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Password <span class="optional">(Optional)</span></label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input id="password" type="password" placeholder="Encrypt with password" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="expiry">Expires In</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-clock input-icon"></i>
+                    <select id="expiry">
+                    <option value="60">1 Hour</option>
+                    <option value="720">12 Hours</option>
+                    <option value="1440" selected>24 Hours</option>
+                    <option value="10080">7 Days</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button id="createBtn" class="btn-primary">
+            <span class="btn-text">Create Secret Link</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+        <p id="createStatus" class="status-msg"></p>
+
+        <div id="linkContainer" class="result-box hidden">
+          <label>Your Secure Link (One-time use)</label>
+          <div class="copy-row">
+             <input id="shareUrl" readonly />
+             <button id="copyBtn" class="btn-icon" title="Copy to Clipboard">
+                <i class="fa-regular fa-copy"></i>
+             </button>
+          </div>
+          <small><i class="fa-solid fa-circle-info"></i> This link works only once. It includes the token and encryption key.</small>
+        </div>
+      </section>
+
+      <section class="card glass-panel hidden" id="readSection">
+        <div class="card-header">
+          <i class="fa-solid fa-lock-open icon-lg"></i>
+          <h2>Read Secret</h2>
+        </div>
+        <p id="readStatus" class="status-msg"></p>
+        
+        <div id="secretDisplay" class="hidden">
+          <label>Decrypted Secret</label>
+          <div class="input-wrapper">
+             <textarea id="decrypted" rows="5" readonly></textarea>
+          </div>
+          <button id="copyDecryptedBtn" class="btn-secondary">
+             <i class="fa-regular fa-copy"></i> Copy Secret
+          </button>
+          <p class="destruction-note"><i class="fa-solid fa-fire"></i> This secret has been destroyed from the server.</p>
+        </div>
+      </section>
+    </main>
+    
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Action Successful</span>
+    </div>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
+
